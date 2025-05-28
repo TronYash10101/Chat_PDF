@@ -1,0 +1,22 @@
+#ai_message{
+    width: 37vw;
+    height: 52vh;
+    margin: 2em 0em;
+    border: 2px solid black;
+}
+.res{
+    border: 1px solid black;
+    height: 3vh;
+    width: 18vw;
+    margin: 1em 0em;
+    position: absolute;
+}
+#hres{
+    left: 19vw;
+    height: 8em;
+
+}
+#ares{
+    top:25vh;
+    height: 15em;
+}

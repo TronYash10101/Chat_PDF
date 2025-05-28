@@ -1,0 +1,60 @@
+body {
+  background-color: rgb(12, 12, 12);
+}
+
+#title {
+  color: #edae00;
+  width: 32vw;
+  font-size: 5em;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  top: 1em;
+  left: 9em;
+  position: absolute;
+  margin: 0;
+}
+
+#upload_btn {
+  position: relative;
+  top: 89vh;
+  left: 25.5vw;
+  padding: 1em 33em;
+  border: none;
+  border-radius: 63px;
+  background: linear-gradient(145deg, #fbb800, #d49b00);
+  box-shadow: 5px 7px 35px #e9aa00, -2px 0px 16px #edae00;
+}
+
+#upload_btn:hover {
+  cursor: pointer;
+  border-radius: 63px;
+  background: linear-gradient(145deg, #fbb800, #d49b00);
+  box-shadow: 5px 7px 18px #e9aa00, -2px 0px 6px #edae00;
+  transition-duration: 0.5s;
+  color: white;
+  font-weight: bold;
+}
+#upload_file {
+  display: none;
+}
+
+#cover {
+  position: absolute;
+  top: 23vh;
+  left: 17vw;
+  padding: 17em 40em;
+  backdrop-filter: blur(3px) saturate(200%);
+  -webkit-backdrop-filter: blur(3px) saturate(200%);
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+#cover:hover {
+  position: absolute;
+  padding: 17em 40em;
+  backdrop-filter: blur(3px) saturate(200%);
+  -webkit-backdrop-filter: blur(3px) saturate(200%);
+  background-color: rgba(237, 174, 0, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}

@@ -1,0 +1,40 @@
+#ai{
+    position: absolute;
+    height: 9em;
+    width: 23em;
+    border: 1px solid black;
+    right: 79vw;
+}
+#prompt_bar{
+    position: absolute;
+    left: 45%;
+    top: 96%;
+    width: 39em;
+}
+#submit{
+     position: absolute;
+    left: 40%;
+    top: 96%;
+    width: 6em;
+}
+#human_message{
+    display: flex;
+    position: relative;
+    list-style: none;
+    width: 98vw;
+    left: -2em;
+    margin: 0;
+}
+#ai_message{
+    display: flex;
+    justify-content: right;
+    left: -2em;
+    margin: 0;
+    position: relative;
+    list-style: none;
+    width: 98vw;
+}
+li{
+    list-style: none;
+    margin: 1em;
+}
