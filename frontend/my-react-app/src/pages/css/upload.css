@@ -23,7 +23,13 @@ body {
   background: linear-gradient(145deg, #fbb800, #d49b00);
   box-shadow: 5px 7px 35px #e9aa00, -2px 0px 16px #edae00;
 }
-
+#uploaded_file{
+      color: white;
+    font-size: 2em;
+    position: absolute;
+    left: 16em;
+    bottom: 7em;
+}
 #upload_btn:hover {
   cursor: pointer;
   border-radius: 63px;
