@@ -1,19 +1,18 @@
 from pymongo import MongoClient
-import schema 
 
-user_instance = schema.User({
-    
-})
-
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient("mongodb://localhost:27017/")
 
 database = client["train_db"]
 collection = database["users"]
+arr = []
 
+for x in range(2):
 
-# result = collection.insert_many(
-#  [{}]
-# )
+    user = input("enter username: ")
+    password = input("enter password: ")
 
-# for x in range(1, 11):
-    
+    user_dict = {"user": user, "password": password}
+
+    arr.append(user_dict)
+
+result = collection.insert_many(arr)
