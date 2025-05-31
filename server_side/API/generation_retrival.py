@@ -7,9 +7,9 @@ import ast
 import pickle
 from langchain_community.document_loaders import PyMuPDFLoader
 
-loader = PyMuPDFLoader("data\pdf.pdf")
-docs = loader.load()
-vector_store = embeddings_vectordb.process(docs)
+# loader = PyMuPDFLoader("data\pdf.pdf")
+# docs = loader.load()
+# vector_store = embeddings_vectordb.process(docs)
 
 File = r"D:\RAG2\data\history.json"
 
@@ -88,6 +88,6 @@ def gen_ret(query: str,vector_store):
     print(message_history)
     return answer
 
-x = gen_ret("how did first world war started?",vector_store)
-print(x)
+# x = gen_ret("how did first world war started?",vector_store)
+# print(x)
 

@@ -6,5 +6,4 @@ class QueryRequest(BaseModel):
 
 class User(BaseModel):
     user : str
-    context : str
     password : str

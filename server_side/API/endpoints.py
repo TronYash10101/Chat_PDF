@@ -7,8 +7,10 @@ import shutil
 import os
 from datetime import datetime, date, timedelta
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from schema import QueryRequest
+from schema import User
+from storage.database import crud
+# import storage.db_collections
 
 app = FastAPI()
 router = APIRouter()
@@ -31,6 +33,10 @@ app.add_middleware(
 async def home():
     return {"res" : "You have reached home"}
 
+@router.post("/signup")
+async def signup(user : User):
+    crud.insert_one({"name":user.user,"password" : user.password})
+    
 @router.post("/upload")
 async def pdf_processing(file : UploadFile):
     temp_file_path = f"D:/RAG2/data/{file.filename}_copy.pdf"
