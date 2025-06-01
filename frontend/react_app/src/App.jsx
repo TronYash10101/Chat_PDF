@@ -8,6 +8,7 @@ const Upload = lazy(()=>import("./pages/upload_page"))
 const Chat = lazy(()=>import("./pages/chat_page"))
 const Roling = lazy(()=>import("./pages/rolling_text"))
 const Signup = lazy(()=>import("./pages/signup"))
+const Login = lazy(()=>import("./pages/login"))
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/rolling" element={<Roling />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       </Suspense>
     </BrowserRouter>

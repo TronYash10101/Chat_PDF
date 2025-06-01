@@ -1,4 +1,4 @@
-from fastapi import FastAPI,APIRouter
+from fastapi import FastAPI,APIRouter,HTTPException
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
 from embeddings_vectordb import process
@@ -11,6 +11,8 @@ from schema import QueryRequest
 from schema import User
 from storage.database import crud
 # import storage.db_collections
+from hashing.password_hashing import hashing
+
 
 app = FastAPI()
 router = APIRouter()
@@ -28,14 +30,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/")
 async def home():
     return {"res" : "You have reached home"}
 
 @router.post("/signup")
 async def signup(user : User):
-    crud.insert_one({"name":user.user,"password" : user.password})
+    hashed_password = hashing(user.password)
+    if(hashed_password == "password_error"):
+        raise HTTPException(status_code=400, detail="Missing password")
+    else:
+        crud.insert_one({"username":user.username,"password" : hashed_password})
+        print("insert user")
     
 @router.post("/upload")
 async def pdf_processing(file : UploadFile):

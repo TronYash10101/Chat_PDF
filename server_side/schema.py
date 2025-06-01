@@ -5,5 +5,5 @@ class QueryRequest(BaseModel):
     query: str
 
 class User(BaseModel):
-    user : str
+    username : str
     password : str
