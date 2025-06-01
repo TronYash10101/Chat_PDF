@@ -11,6 +11,9 @@ gpt-4o-mini used to generating answers
 Enables Conversation history to retain context  
 
 ## Module Version
-Use requirement.txt to match the version of modules used for this projects, 
 
-📃 following steps can help to set up:-
+Use requirement.txt to match the version of modules used for this projects 📄
+
+```python
+pip install -r requirements.txt
+
