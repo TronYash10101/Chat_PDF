@@ -1,4 +1,4 @@
-from fastapi import FastAPI,APIRouter,HTTPException
+from fastapi import FastAPI,APIRouter,HTTPException,Depends
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
 from embeddings_vectordb import process
@@ -12,7 +12,9 @@ from schema import User
 from storage.database import crud
 # import storage.db_collections
 from hashing.password_hashing import hashing
-
+from authentication.auth import auth_router
+from authentication.auth import user_history
+from typing import Annotated
 
 app = FastAPI()
 router = APIRouter()
@@ -34,7 +36,7 @@ app.add_middleware(
 async def home():
     return {"res" : "You have reached home"}
 
-@router.post("/signup")
+@app.post("/signup")
 async def signup(user : User):
     hashed_password = hashing(user.password)
     if(hashed_password == "password_error"):
@@ -42,8 +44,14 @@ async def signup(user : User):
     else:
         crud.insert_one({"username":user.username,"password" : hashed_password})
         print("insert user")
-    
-@router.post("/upload")
+
+app.include_router(auth_router)
+# @app.get("/login")
+# async def user_history(history : Annotated[str,Depends(user_history)]):
+#     return {"context" : history}
+
+
+@app.post("/upload")
 async def pdf_processing(file : UploadFile):
     temp_file_path = f"D:/RAG2/data/{file.filename}_copy.pdf"
 
@@ -61,7 +69,7 @@ async def pdf_processing(file : UploadFile):
     finally:
         os.remove(temp_file_path)
 
-@router.post("/query")
+@app.post("/query")
 async def query_to_bot(query : QueryRequest):
      vector_store = app.state.vector_store 
      ai_res = gen_ret(query,vector_store)

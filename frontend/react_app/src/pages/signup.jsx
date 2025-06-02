@@ -9,7 +9,7 @@ function signup() {
 
     const navigate = useNavigate()
 
-    const submit_user = (e)=>{
+    const handle_change = (e)=>{
         setnew_user({...new_user,[e.target.name] : e.target.value})
     }
     const post_user = async(e)=>{
@@ -27,8 +27,8 @@ function signup() {
         <>
         <p>sign up</p>
         <form onSubmit={post_user}></form>
-        <input type="text" name="username" placeholder="username" value={new_user.username} onChange={submit_user}/>
-        <input type="text" name="password" placeholder="password" value={new_user.password} onChange={submit_user}/>
+        <input type="text" name="username" placeholder="username" value={new_user.username} onChange={handle_change}/>
+        <input type="text" name="password" placeholder="password" value={new_user.password} onChange={handle_change}/>
         <input type="submit" onClick={post_user}></input>
         </>
     )

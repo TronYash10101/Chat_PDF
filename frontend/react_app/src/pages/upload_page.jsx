@@ -20,8 +20,6 @@ function upload() {
   const catch_pdf = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("hi");
-      
       setselectedfile(file)
       setuploaded_file(file.name);
     }
