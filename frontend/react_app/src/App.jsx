@@ -13,7 +13,7 @@ const Login = lazy(()=>import("./pages/login"))
 function App() {
   return (
     <BrowserRouter>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div></div>}>
       <Routes>
         <Route path="/" element={<Upload />} />
         <Route path="/chat" element={<Chat />} />

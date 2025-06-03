@@ -1,0 +1,81 @@
+body {
+  background-color: rgb(12, 12, 12);
+}
+
+#signup_form {
+  height: 99.7vh;
+  width: 43vw;
+  position: absolute;
+  right: 0vw;
+  top: 0vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #daa100, #b88700);
+  box-shadow: 5px 5px 10px #ca9500, -5px -5px 10px #ce9800;
+}
+
+.handlers {
+  width: 22vw;
+  padding: 1em;
+  margin: 3em 0em;
+  backdrop-filter: blur(1px) saturate(200%);
+  -webkit-backdrop-filter: blur(1px) saturate(200%);
+
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+button.handlers:hover {
+  cursor: pointer;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 5px 5px 28px #fcfcfc, -5px -5px 28px #ffffff;
+}
+input.handlers:focus {
+  border: none;
+  outline: none;
+}
+button.handlers {
+  transition-duration: 0.5s;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 5px 5px 10px #fcfcfc, -5px -5px 10px #ffffff;
+}
+#catch_pharse {
+  color: white;
+  margin: 0;
+  /* width: 34vw; */
+  position: relative;
+  /* top: 32vh; */
+  /* left: 12vw; */
+  font-size: 4em;
+}
+#catch_pharse_today {
+  color: white;
+  margin: 0;
+  /* width: 34vw; */
+  position: relative;
+  /* top: 32vh; */
+  /* left: 12vw; */
+  font-size: 4em;
+  color: #edae00;
+}
+#title_signup {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  top: 27vh;
+  width: 45vw;
+  height: 34vh;
+  padding: 0em 9em;
+  left: 0em;
+}
+h1 {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}

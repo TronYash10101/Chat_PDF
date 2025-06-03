@@ -42,7 +42,7 @@ function upload() {
           "Content-Type": "multipart/form-data",
         },
       });
-      setTimeout(() => navigate("/chat"), 100);
+      setTimeout(() => navigate("/rolling"), 100);
     } catch (e) {
         console.log(e);      
     }
