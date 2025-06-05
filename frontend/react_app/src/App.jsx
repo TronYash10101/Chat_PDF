@@ -15,11 +15,11 @@ function App() {
     <BrowserRouter>
     <Suspense fallback={<div></div>}>
       <Routes>
-        <Route path="/" element={<Upload />} />
+        <Route path="/" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/rolling" element={<Roling />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/upload" element={<Upload />} />
       </Routes>
       </Suspense>
     </BrowserRouter>

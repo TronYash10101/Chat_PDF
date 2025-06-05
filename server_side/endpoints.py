@@ -47,8 +47,9 @@ async def signup(user : User):
 
 app.include_router(auth_router)
 @app.get("/user_history")
-async def user_history(history : Annotated[str,Depends(user_history)]):
-    return {"context" : history}
+async def user_history(username : Annotated[str,Depends(user_history)]):
+    print(username)
+    return {"context" : username}
 
 
 @app.post("/upload")

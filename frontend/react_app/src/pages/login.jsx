@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../api.js";
 import { useNavigate, Navigate } from "react-router-dom";
 import "./css/login.css";
 
+
 function login() {
   const [user, setuser] = useState({ username: "", password: "" });
   const navigate = useNavigate();
+ 
   const handle_change = (e) => {
     setuser({ ...user, [e.target.name]: e.target.value });
   };
@@ -19,11 +21,13 @@ function login() {
       const jwt_token = await api.post("/login", formData, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      localStorage.setItem("access_token", jwt_token["data"]["access_token"]);
+      if (!jwt_token) {
+        localStorage.setItem("access_token", jwt_token["data"]["access_token"]);
+      }  
+      
       setTimeout(() => {
-        navigate("/");
+        navigate("/upload");
       }, 300);
-      console.log(jwt_token);
     } catch (error) {
       console.log(error);
     }
