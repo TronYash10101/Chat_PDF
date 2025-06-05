@@ -4,7 +4,7 @@
 
 ![website_logo](https://github.com/user-attachments/assets/7e59e7b6-588e-4546-82b3-5f274395798c)
 
-## Features
+## Features (v1)
 
 Uses **Similarity Search** to find context related to question
 
