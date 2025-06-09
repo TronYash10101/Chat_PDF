@@ -36,7 +36,6 @@ def process(docs):
         )
 
     ids = vector_store.add_documents(documents=all_splits)
-
     return vector_store
 
 

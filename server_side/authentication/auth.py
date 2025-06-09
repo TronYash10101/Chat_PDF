@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-# from jose import JWTError
+from jwt import ExpiredSignatureError, InvalidTokenError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
@@ -22,7 +22,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 auth_router = APIRouter()
 
 #temp function to decode a token(jwt) will be replaced later, also to get user from database
-def user_history(token : Annotated[str,Depends(oauth2_scheme)]):
+def get_user_history(token : Annotated[str,Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -37,9 +37,11 @@ def user_history(token : Annotated[str,Depends(oauth2_scheme)]):
         user_history = user_list["history"]
         if not user_history:
             raise credentials_exception
-    except:
+        return user_history
+    except InvalidTokenError:
         raise credentials_exception
-    return user_history
+
+
 
 def create_access_token(data : dict , expire_time: timedelta | None = None):
     to_encode = data.copy()
@@ -47,7 +49,7 @@ def create_access_token(data : dict , expire_time: timedelta | None = None):
         expire = datetime.now(timezone.utc) + expire_time
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
-    to_encode.update({"exp" : expire})
+    to_encode.update({"exp" : int(expire.timestamp())})
     encoded_jwt = jwt.encode(to_encode,SECRET,ALGORITHM)
     return encoded_jwt
 

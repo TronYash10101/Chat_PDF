@@ -9,16 +9,18 @@ const Chat = lazy(()=>import("./pages/chat_page"))
 const Roling = lazy(()=>import("./pages/rolling_text"))
 const Signup = lazy(()=>import("./pages/signup"))
 const Login = lazy(()=>import("./pages/login"))
+const Landing_Page = lazy(()=>import("./pages/landing_page"))
 
 function App() {
   return (
     <BrowserRouter>
     <Suspense fallback={<div></div>}>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Landing_Page />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/rolling" element={<Roling />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* <Route path="/signup" element={<Signup />} /> */}
         <Route path="/upload" element={<Upload />} />
       </Routes>
       </Suspense>

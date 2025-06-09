@@ -55,7 +55,7 @@ function Rolling() {
 
   return (
     <>
-      <input type="text" id="prompt_bar" onChange={text_change}></input>
+      <input type="text" id="prompt_bar" onChange={text_change} autoComplete="off"></input>
       <ul>
         {chat.map((chat, idx) => (
           <React.Fragment key={idx}>
@@ -70,7 +70,7 @@ function Rolling() {
       </ul>
 
       <button id="submit" onClick={send}>
-        Send
+        ⬆
       </button>
     </>
   );

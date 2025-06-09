@@ -13,7 +13,7 @@ from storage.database import crud
 # import storage.db_collections
 from hashing.password_hashing import hashing
 from authentication.auth import auth_router
-from authentication.auth import user_history
+from authentication.auth import get_user_history
 from typing import Annotated
 
 app = FastAPI()
@@ -47,8 +47,7 @@ async def signup(user : User):
 
 app.include_router(auth_router)
 @app.get("/user_history")
-async def user_history(username : Annotated[str,Depends(user_history)]):
-    print(username)
+async def user_history(username : Annotated[str,Depends(get_user_history)]):
     return {"context" : username}
 
 

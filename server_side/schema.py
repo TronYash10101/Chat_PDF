@@ -7,7 +7,6 @@ class QueryRequest(BaseModel):
 class User(BaseModel):
     username : str
     password : str
-    context : str
 
 class Token(BaseModel):
     access_token: str

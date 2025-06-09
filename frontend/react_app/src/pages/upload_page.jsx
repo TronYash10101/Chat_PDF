@@ -4,12 +4,14 @@ import api from "../api.js";
 import { Navigate, useNavigate } from "react-router-dom";
 // import { useContext } from "react";
 // import { user_context } from "../context.jsx";
+import { jwtDecode } from "jwt-decode";
 
 function upload({ children }) {
   const fileInputRef = useRef(null);
   const [selectedfile, setselectedfile] = useState(null);
   const [uploaded_file, setuploaded_file] = useState("");
   const [user_info_display, setuser_info_display] = useState(false);
+  const [username,setusername] = useState("Not Loged In")
   // const context = useContext(user_context);
   // console.log(context);
 
@@ -49,17 +51,25 @@ function upload({ children }) {
     }
   };
 
-  const show_user_info = async() => {
+  // const show_user_info = async () => {
+  //   setuser_info_display((prev) => !prev);
+  //   const token = localStorage.getItem("access_token");
+  //   if (token) {
+  //     const user_name = await api.get("/user_history", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log(user_name);
+  //   }
+  // };
+
+  const jwtdecode = ()=>{
     setuser_info_display((prev) => !prev);
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      const user_name = await api.get("/user_history", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(user_name);
-    }
-    console.log(token);
-  };
+    const jwt = localStorage.getItem("access_token")
+    const user_name = jwtDecode(jwt)["sub"]
+    setusername(user_name);
+  }
 
   return (
     <div id="container">
@@ -84,20 +94,12 @@ function upload({ children }) {
       </div>
       {/* <p>{erromsg}</p> */}
       <div id="history"></div>
-      <button id="pf" onClick={show_user_info}>
+      <button id="pf" onClick={jwtdecode}>
         {user_info_display ? "" : ""}
       </button>
       {user_info_display && (
         <div id="user_info">
-          <p>username</p>
-          <button
-            id="login_btn"
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            Login
-          </button>
+          <p id="loged_user">{username}</p>
         </div>
       )}
     </div>

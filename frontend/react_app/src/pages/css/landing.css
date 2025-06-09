@@ -1,0 +1,159 @@
+body {
+  margin: 0;
+  background-color: #000000;
+}
+
+#login_signup {
+  display: flex;
+  border: 2px solid black;
+  position: absolute;
+  height: 43vh;
+  width: 48vw;
+  top: 9em;
+  right: 13em;
+  transform: skew(-45deg, 6deg);
+  transition-duration: 1s;
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  box-shadow: 0px 0px 40px #ff6500;
+}
+#login_signup:hover {
+  /* border: 2px solid black; */
+  position: absolute;
+  height: 55vh;
+  width: 56vw;
+  top: 4em;
+  right: 2.3em;
+  transform: skew(0deg, 0deg);
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+.custom-shape-divider-bottom-1749358636 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1749358636 svg {
+  position: relative;
+  display: block;
+  width: calc(105% + 1.3px);
+  height: 188px;
+}
+
+.custom-shape-divider-bottom-1749358636 .shape-fill {
+  fill: #0b192c;
+}
+
+.chatchphrase {
+  position: relative;
+  top: 3em;
+  left: 0.4em;
+  width: 12em;
+  margin: 0;
+  font-size: 4em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #ff6500;
+  text-shadow: 0px 0px 10px #ff6500;
+}
+h3 {
+  font-size: 2em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #ff6500;
+}
+#end {
+  position: relative;
+  top: 76vh;
+  height: 45vh;
+  width: 99.2vw;
+  background-color: #0b192c;
+  border: 1px solid #0b192c;
+}
+#handler_div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+  height: 43vh;
+  width: 48vw;
+  top: 9em;
+  z-index: 1;
+  right: 13em;
+  /* transform: skew(-45deg, 6deg); */
+  transition-duration: 1s;
+}
+#handler_div:hover {
+  height: 55vh;
+  width: 56vw;
+  top: 4em;
+  justify-content: center;
+  align-items: center;
+  right: 2.3em;
+  margin: 0;
+  transform: skew(0deg, 0deg);
+  cursor: pointer;
+}
+.landing_handlers {
+  /* position: relative; */
+  top: 12vh;
+  left: 15vw;
+  height: 2em;
+  width: 40em;
+  margin: 1em;
+  backdrop-filter: blur(2px) saturate(200%);
+  -webkit-backdrop-filter: blur(2px) saturate(200%);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  color: #ff6500;
+}
+.landing_handlers:focus{
+  outline: none;
+}
+#login_btn {
+  position: relative;
+  top: 18em;
+  left: 2.3em;
+  padding: 1em 3em;
+  border: 5px solid #ff6500;
+  background: none;
+  color: #ff6500;
+}
+#login_btn:hover {
+  cursor: pointer;
+  backdrop-filter: blur(15px) saturate(200%);
+    -webkit-backdrop-filter: blur(15px) saturate(200%);
+    background-color: rgba(255, 101, 0, 0.65);
+    /* border-radius: 12px; */
+    /* border: 1px solid rgba(255, 255, 255, 0.125); */
+    color: #000000;
+    /* font-weight:bold; */
+}
+::-webkit-scrollbar {
+  width: 12px;
+  margin: 0;
+
+}
+::-webkit-scrollbar-track {
+  background: #1E3E62;
+  border-radius: 6px;
+  margin: 0;
+}
+::-webkit-scrollbar-thumb {
+  background: #ff6500;
+  border-radius: 6px;
+  margin: 0;
+}
