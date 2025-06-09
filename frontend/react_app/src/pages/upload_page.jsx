@@ -94,14 +94,7 @@ function upload({ children }) {
       </div>
       {/* <p>{erromsg}</p> */}
       <div id="history"></div>
-      <button id="pf" onClick={jwtdecode}>
-        {user_info_display ? "" : ""}
-      </button>
-      {user_info_display && (
-        <div id="user_info">
-          <p id="loged_user">{username}</p>
-        </div>
-      )}
+      
     </div>
   );
 }
