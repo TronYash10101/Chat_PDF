@@ -4,14 +4,13 @@ import api from "../api.js";
 import { Navigate, useNavigate } from "react-router-dom";
 // import { useContext } from "react";
 // import { user_context } from "../context.jsx";
-import { jwtDecode } from "jwt-decode";
+import User_info from "../components/user_info.jsx";
 
 function upload({ children }) {
   const fileInputRef = useRef(null);
   const [selectedfile, setselectedfile] = useState(null);
   const [uploaded_file, setuploaded_file] = useState("");
-  const [user_info_display, setuser_info_display] = useState(false);
-  const [username,setusername] = useState("Not Loged In")
+
   // const context = useContext(user_context);
   // console.log(context);
 
@@ -64,12 +63,7 @@ function upload({ children }) {
   //   }
   // };
 
-  const jwtdecode = ()=>{
-    setuser_info_display((prev) => !prev);
-    const jwt = localStorage.getItem("access_token")
-    const user_name = jwtDecode(jwt)["sub"]
-    setusername(user_name);
-  }
+  
 
   return (
     <div id="container">
@@ -94,7 +88,7 @@ function upload({ children }) {
       </div>
       {/* <p>{erromsg}</p> */}
       <div id="history"></div>
-      
+      <User_info/>
     </div>
   );
 }

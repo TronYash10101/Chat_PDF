@@ -3,6 +3,7 @@ import "./css/landing.css";
 import { useState } from "react";
 import api from "../api.js";
 import Credential_error from "./error_pages/credential_error.jsx";
+import User_info from "../components/user_info.jsx";
 
 function Landing_Page() {
   const navigate = useNavigate()
@@ -52,6 +53,7 @@ function Landing_Page() {
       <div id="end">
         <h1 style={{color:"white"}}>Video Section</h1>
       </div>
+    <User_info/>
     </>
   );
 }
