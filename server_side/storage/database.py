@@ -9,3 +9,6 @@ class crud:
     def read(username : str):
         result_read = user_collection.find_one(filter={"username": username})
         return result_read
+
+    def create_context_field(username:str,pdf_name : str):
+        result_field = user_collection.update_one({"username" : username},{"$set" : {"pdf" :{pdf_name: ""}}})

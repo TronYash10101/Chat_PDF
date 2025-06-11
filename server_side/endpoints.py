@@ -1,4 +1,4 @@
-from fastapi import FastAPI,APIRouter,HTTPException,Depends
+from fastapi import FastAPI,APIRouter,HTTPException,Depends,Body
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
 from embeddings_vectordb import process
@@ -13,7 +13,7 @@ from storage.database import crud
 # import storage.db_collections
 from hashing.password_hashing import hashing
 from authentication.auth import auth_router
-from authentication.auth import get_user_history
+from authentication.auth import get_user_history,get_username
 from typing import Annotated
 
 app = FastAPI()
@@ -47,12 +47,15 @@ async def signup(user : User):
 
 app.include_router(auth_router)
 @app.get("/user_history")
-async def user_history(username : Annotated[str,Depends(get_user_history)]):
-    return {"context" : username}
+async def user_history(context : Annotated[str,Depends(get_user_history)]):
+    return {"context" : context}
 
 
 @app.post("/upload")
-async def pdf_processing(file : UploadFile):
+async def pdf_processing(file : UploadFile, username : Annotated[str,Depends(get_username)]):
+    pdf_name = file.filename
+    crud.create_context_field(username,pdf_name)
+
     temp_file_path = f"D:/RAG2/data/{file.filename}_copy.pdf"
 
     print("endpoint reached")
@@ -70,7 +73,7 @@ async def pdf_processing(file : UploadFile):
         os.remove(temp_file_path)
 
 @app.post("/query")
-async def query_to_bot(query : QueryRequest):
+async def query_to_bot(query: QueryRequest):
      vector_store = app.state.vector_store 
      ai_res = gen_ret(query,vector_store)
      return {"ai_res" : ai_res}

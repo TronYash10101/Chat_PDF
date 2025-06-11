@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/rolling.css";
 import api from "../api.js";
 
@@ -6,56 +6,64 @@ function Rolling() {
   const [chat, setchat] = useState([]);
   const [tempmsg, settempmsg] = useState("");
 
-  const random = async(query) => {
-      try {
-        const ai_response = api.post("/query", { query: query});
-        return ai_response
-      } catch (error) {
-        
-        console.log(error);
-        reject(error)
-        
-      }  
+  const ai_endpoint = async (query) => {
+    try {
+      const ai_response = api.post("/query", { query: query });
+      return ai_response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const random = async () => {
+    return Math.floor(Math.random() * 100);
   };
   const text_change = (event) => {
-    settempmsg(event.target.value);    
+    settempmsg(event.target.value);
   };
+   
   const send = async () => {
     if (tempmsg.trim() === "") {
       return;
     }
+    const userMessage = tempmsg; 
+    settempmsg(""); 
 
-    const newMessage = { You: tempmsg, AI: "..." };
-    const newChat = [...chat, newMessage];
-    setchat(newChat);
-    settempmsg("");
-
-    const ai = await random(tempmsg);
-
-    const updatedmessage = [...chat]
-    updatedmessage[updatedmessage - 1].AI = ai
-    
-    setchat(updatedmessage);
-    // console.log([...chat, tempmsg]);
+    const newMessage = { You: userMessage, AI: "..." };
+    setchat((prev_chat) => [...prev_chat, newMessage]);
+    try {
+      const ai = await ai_endpoint(userMessage);
+      
+      // const ai = await random(userMessage);
+      setchat((prev_chat_after_add) => {
+        const updated_chat = [...prev_chat_after_add];
+        if (updated_chat.length > 0) {
+          updated_chat[updated_chat.length - 1]["AI"] = ai.data["ai_res"]
+        }
+        return updated_chat;
+      });
+      console.log(chat);
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // const [prompt, setprompt] = useState("");
-  // const [subprompt, setsubprompt] = useState("");
-  // const [aimsg, setaimsg] = useState("");
-
-  // const prompt_change = (event) => {
-  //   setprompt(event.target.value);
-  // };
-  // const submitprompt = async () => {
-  //   setsubprompt(prompt);
-  //   const ai_response = await api.post("/query", { query: prompt });
-  //   setaimsg(ai_response.data["ai_res"]);
-  //   console.log(aimsg);
-  // };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // prevent newline
+      send();
+    }
+  };
 
   return (
     <>
-      <input type="text" id="prompt_bar" onChange={text_change} autoComplete="off"></input>
+      <textarea
+        type="text"
+        id="prompt_bar"
+        onChange={text_change}
+        autoComplete="off"
+        onKeyDown={handleKeyDown}
+      ></textarea>
       <ul>
         {chat.map((chat, idx) => (
           <React.Fragment key={idx}>

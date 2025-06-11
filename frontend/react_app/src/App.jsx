@@ -7,7 +7,7 @@ import { Suspense } from "react";
 const Upload = lazy(()=>import("./pages/upload_page"))
 const Chat = lazy(()=>import("./pages/chat_page"))
 const Roling = lazy(()=>import("./pages/rolling_text"))
-const Signup = lazy(()=>import("./pages/signup"))
+const Signout = lazy(()=>import("./pages/signout"))
 const Login = lazy(()=>import("./pages/login"))
 const Landing_Page = lazy(()=>import("./pages/landing_page"))
 
@@ -20,7 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/rolling" element={<Roling />} />
-        {/* <Route path="/signup" element={<Signup />} /> */}
+        <Route path="/signout" element={<Signout />} />
         <Route path="/upload" element={<Upload />} />
       </Routes>
       </Suspense>

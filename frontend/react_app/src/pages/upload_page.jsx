@@ -10,11 +10,20 @@ function upload({ children }) {
   const fileInputRef = useRef(null);
   const [selectedfile, setselectedfile] = useState(null);
   const [uploaded_file, setuploaded_file] = useState("");
-
+  const [isAuthenticated, setisAuthenticated] = useState(false);
+  const [token, settoken] = useState(null);
   // const context = useContext(user_context);
   // console.log(context);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const tok = localStorage.getItem("access_token");
+    settoken(tok);
+    if (tok) {
+      setisAuthenticated(true);
+    }
+  }, []);
 
   const handleBoxClick = () => {
     fileInputRef.current.click();
@@ -36,12 +45,14 @@ function upload({ children }) {
       if (!selectedfile) {
         alert("Select a file");
       }
+      
       const formData = new FormData();
       formData.append("file", selectedfile);
 
       const response = await api.post("/upload", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          // "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
         },
       });
       setTimeout(() => navigate("/rolling"), 100);
@@ -49,21 +60,6 @@ function upload({ children }) {
       console.log(e);
     }
   };
-
-  // const show_user_info = async () => {
-  //   setuser_info_display((prev) => !prev);
-  //   const token = localStorage.getItem("access_token");
-  //   if (token) {
-  //     const user_name = await api.get("/user_history", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log(user_name);
-  //   }
-  // };
-
-  
 
   return (
     <div id="container">
@@ -82,13 +78,19 @@ function upload({ children }) {
           onChange={catch_pdf}
           ref={fileInputRef}
         />
-        <button id="upload_btn" onClick={reach_upload_api}>
-          UPLOAD
+        <button
+          id="upload_btn"
+          onClick={reach_upload_api}
+          disabled={!isAuthenticated}
+        >
+          {!isAuthenticated
+            ? "Please log in to upload files"
+            : "Upload Your File"}
         </button>
       </div>
       {/* <p>{erromsg}</p> */}
       <div id="history"></div>
-      <User_info/>
+      <User_info />
     </div>
   );
 }

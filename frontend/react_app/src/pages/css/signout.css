@@ -48,7 +48,7 @@ button.handlers {
   border: 5px solid #ff6500;
   background: none;
   color: #ff6500;
-  right: -15em;
+  right: 0em;
 }
 #catch_pharse {
   color: white;

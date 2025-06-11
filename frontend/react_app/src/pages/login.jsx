@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import api from "../api.js";
 import { useNavigate, Navigate } from "react-router-dom";
 import "./css/login.css";
-import Login_error from "./error_pages/credential_error.jsx";
+import Credential_error from "./error_pages/credential_error.jsx";
 
 function Login() {
   const [user, setuser] = useState({ username: "", password: "" });
@@ -10,12 +10,7 @@ function Login() {
   const [login_error_msg, setlogin_error_msg] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("access_token")) {
-      localStorage.removeItem("access_token");
-    }
-  }, []);
-
+  
   const handle_change = (e) => {
     setuser({ ...user, [e.target.name]: e.target.value });
   };
@@ -37,13 +32,12 @@ function Login() {
       }, 300);
     } catch (error) {
       setlogin_error(true);
-      setlogin_error_msg(error.message)   
+      setlogin_error_msg(error.message);
       console.log(login_error_msg);
-         
     }
   };
   if (login_error) {
-    return <Credential_error error_msg={login_error_msg}/>;
+    return <Credential_error error_msg={login_error_msg} />;
   }
 
   return (

@@ -21,7 +21,7 @@ TOKEN_EXPIRE =30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 auth_router = APIRouter()
 
-#temp function to decode a token(jwt) will be replaced later, also to get user from database
+
 def get_user_history(token : Annotated[str,Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -41,6 +41,21 @@ def get_user_history(token : Annotated[str,Depends(oauth2_scheme)]):
     except InvalidTokenError:
         raise credentials_exception
 
+def get_username(token:Annotated[str,Depends(oauth2_scheme)]):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+
+        jwt_decoded = jwt.decode(token,SECRET,algorithms=[ALGORITHM])
+        username = jwt_decoded["sub"] 
+        if not username:
+            raise credentials_exception
+        return username
+    except InvalidTokenError:
+        raise credentials_exception
 
 
 def create_access_token(data : dict , expire_time: timedelta | None = None):

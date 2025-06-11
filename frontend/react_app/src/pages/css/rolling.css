@@ -1,5 +1,5 @@
 body {
-  background-color: #000000;
+  background-color: #1e3e62;
   margin: 0;
 }
 #ai {
@@ -10,57 +10,69 @@ body {
   right: 79vw;
 }
 #prompt_bar {
-  position: absolute;
+  position: fixed;
   left: 32%;
   top: 94%;
   width: 49em;
   height: 3em;
-  backdrop-filter: blur(0px) saturate(180%);
-  -webkit-backdrop-filter: blur(0px) saturate(180%);
-  background-color: rgba(30, 62, 98, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(11, 25, 44, 0.75);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
-  color: #FF6500;
+  color: #ff6500;
+  resize: none;
+  overflow: hidden;
 }
 #prompt_bar:focus {
   outline: none;
 }
 #submit {
-  position: absolute;
+  position: fixed;
   left: 68vw;
   top: 93.3vh;
   width: 4em;
   border-radius: 100%;
   height: 4em;
-  backdrop-filter: blur(0px) saturate(180%);
-  -webkit-backdrop-filter: blur(0px) saturate(180%);
-  background-color: rgba(30, 62, 98, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(11, 25, 44, 0.75);
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
   color: white;
 }
 #human_message {
-  display: flex;
-  position: relative;
-  list-style: none;
-  width: 23vw;
-  height: 12vw;
-  left: -2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
+  display: inline-block;
+  max-width: 20vw;
+  padding: 0.75em 1em;
+  margin: 0.5em 0;
   color: white;
-  background-color: #0B192C;
-  border-radius: 5%;
+  background-color: #0b192c;
+  border-radius: 0.5em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: #ff6500;
+  font-size: 1.2em;
+  font-weight: bolder;
 }
 #ai_message {
-  display: flex;
-  justify-content: right;
-  left: -2em;
-  margin: 0;
+  display: inline-block;
   position: relative;
-  list-style: none;
-  width: 98vw;
+  font-weight: bolder;
+  max-width: 20vw;
+  padding: 0.75em 1em;
+  margin: 0.5em 0;
+  color: white;
+  background-color: #0b192c;
+  border-radius: 0.5em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  right: -90em;
+  color: #ff6500;
+  font-size: 1.2em;
+
 }
 li {
   list-style: none;

@@ -6,6 +6,7 @@ import json
 import ast
 import pickle
 from langchain_community.document_loaders import PyMuPDFLoader
+from storage.database import crud
 
 # loader = PyMuPDFLoader("data\pdf.pdf")
 # docs = loader.load()
@@ -51,7 +52,7 @@ def gen_ret(query: str,vector_store):
     message_history.append({"role": "user", "content": f"{query}{condition}"})
 
     tool_response = client.responses.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         input=message_history,
         tools=tools,
         tool_choice="auto"
@@ -72,7 +73,7 @@ def gen_ret(query: str,vector_store):
         })
 
         final_response = client.responses.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             input=message_history,
             tools=tools,
         )
@@ -86,8 +87,9 @@ def gen_ret(query: str,vector_store):
     with open(File, 'wb') as f:
         pickle.dump(message_history, f)
     print(message_history)
+    # print(tool_call)
     return answer
 
-# x = gen_ret("how did first world war started?",vector_store)
+# x = gen_ret("about which war I asked you just now?",vector_store)
 # print(x)
 
