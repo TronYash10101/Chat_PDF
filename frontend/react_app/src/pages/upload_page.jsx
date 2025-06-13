@@ -11,7 +11,8 @@ function upload({ children }) {
   const [selectedfile, setselectedfile] = useState(null);
   const [uploaded_file, setuploaded_file] = useState("");
   const [isAuthenticated, setisAuthenticated] = useState(false);
-  const [token, settoken] = useState(null);
+  const [token, settoken] = useState("");
+  const [pdf_obj, setpdf_obj] = useState({});
   // const context = useContext(user_context);
   // console.log(context);
 
@@ -24,6 +25,26 @@ function upload({ children }) {
       setisAuthenticated(true);
     }
   }, []);
+
+  useEffect(() => {
+    const get_user_pdf = async () => {
+      if (isAuthenticated) {
+        try {
+          const response = await api.get("/user_pdfs", {
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setpdf_obj(response.data["userpdf_obj"]);
+          console.log(pdf_obj);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    get_user_pdf();
+  }, [isAuthenticated, token]);
 
   const handleBoxClick = () => {
     fileInputRef.current.click();
@@ -45,14 +66,14 @@ function upload({ children }) {
       if (!selectedfile) {
         alert("Select a file");
       }
-      
+
       const formData = new FormData();
       formData.append("file", selectedfile);
 
       const response = await api.post("/upload", formData, {
         headers: {
           // "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setTimeout(() => navigate("/rolling"), 100);
@@ -89,7 +110,20 @@ function upload({ children }) {
         </button>
       </div>
       {/* <p>{erromsg}</p> */}
-      <div id="history"></div>
+      <div id="history">
+        <h1 id="history_title">Your PDFs</h1>
+        <div id="pdfs">
+        {pdf_obj && Object.entries(pdf_obj).length > 0 ? (
+          Object.entries(pdf_obj).map(([id, context]) => (
+            <button key={id} value={id} className="pdf_btns">
+              {context["name"]}
+            </button>
+          ))
+        ) : (
+          <p style={{color : "#ff6500",fontSize : "1.3em"}}>No PDFs uploaded yet.</p>
+        )}
+        </div>
+      </div>
       <User_info />
     </div>
   );

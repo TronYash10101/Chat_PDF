@@ -12,19 +12,21 @@ from storage.database import crud
 # docs = loader.load()
 # vector_store = embeddings_vectordb.process(docs)
 
-File = r"D:\RAG2\data\history.json"
+# File = r"D:\RAG2\data\history.json"
 
-if os.path.exists(File):
-    with open(File, 'rb') as f:
-        message_history = pickle.load(f)
-else:
-    message_history = []
+# if os.path.exists(File):
+#     with open(File, 'rb') as f:
+#         message_history = pickle.load(f)
+# else:
+#     message_history = []
 
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
+def gen_ret(query: str,vector_store,uuid:str,username:str):
 
-def gen_ret(query: str,vector_store):
-    load_dotenv()
-    api_key = os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=api_key)
+    raw = crud.get_user_context(username, uuid)
+    message_history = raw if isinstance(raw, list) else []
 
     def retrieve(query: str):
         retrieved_docs = vector_store.similarity_search(query, k=2)
@@ -65,7 +67,7 @@ def gen_ret(query: str,vector_store):
 
         result = retrieve(args["query"])
 
-        message_history.append(tool_call)
+        message_history.append(tool_call.model_dump())
         message_history.append({
             "type": "function_call_output",
             "call_id": tool_call.call_id,
@@ -82,11 +84,12 @@ def gen_ret(query: str,vector_store):
     elif tool_call.type == "message":
         answer = tool_call.content[0].text
         
-    # print(answer)
+    
+    # print(message_history)
     message_history.append({"role": "assistant", "content": answer})
-    with open(File, 'wb') as f:
-        pickle.dump(message_history, f)
-    print(message_history)
+    # with open(File, 'wb') as f:
+    #     pickle.dump(message_history, f)
+    crud.update_context_field(username,uuid,message_history)
     # print(tool_call)
     return answer
 
