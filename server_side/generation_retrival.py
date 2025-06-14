@@ -78,6 +78,7 @@ def gen_ret(query: str,vector_store,uuid:str,username:str):
             model="gpt-4o-mini",
             input=message_history,
             tools=tools,
+            stream=True,
         )
         answer = final_response.output[0].content[0].text 
         

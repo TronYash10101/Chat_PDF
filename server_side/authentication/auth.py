@@ -22,7 +22,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 auth_router = APIRouter()
 
 
-def get_user_history(token : Annotated[str,Depends(oauth2_scheme)]):
+def get_user_history(token : Annotated[str,Depends(oauth2_scheme)],uuid:str):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -34,7 +34,7 @@ def get_user_history(token : Annotated[str,Depends(oauth2_scheme)]):
         if not username:
             raise credentials_exception
         user_list = crud.read(username)
-        user_history = user_list["history"]
+        user_history = user_list["pdf"][uuid]["context"]
         if not user_history:
             raise credentials_exception
         return user_history

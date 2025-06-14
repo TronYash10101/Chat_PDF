@@ -7,12 +7,13 @@ THROUGH FORNTEND SEND THESE PARAMETER(app.state.vector_store,app.state.chat_id,a
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
+import fitz
 from embeddings_vectordb import process
 from generation_retrival import gen_ret
 import shutil
 import os
-from datetime import datetime, date, timedelta
 from fastapi.middleware.cors import CORSMiddleware
+from langchain.schema import Document
 from schema import QueryRequest
 from schema import User
 from storage.database import crud
@@ -22,6 +23,9 @@ from authentication.auth import auth_router
 from authentication.auth import get_user_history, get_username
 from typing import Annotated
 import uuid
+from gridfs_db.create_db_pdf import create_pdf
+from gridfs_db.get_file_data import get_file_data
+
 
 app = FastAPI()
 router = APIRouter()
@@ -56,8 +60,22 @@ app.include_router(auth_router)
 
 
 @app.get("/user_history")
-async def user_history(context: Annotated[str, Depends(get_user_history)]):
-    return {"context": context}
+async def user_history(username : Annotated[str,Depends(get_username)],fileid:str):
+
+    file_bytes = get_file_data(fileid)
+    file_data = file_bytes.read()
+    loader = fitz.open(stream=file_data,filetype="pdf")
+    docs = []
+    for page_num in range(len(loader)):
+        page = loader.load_page(page_num)
+        text_page = page.get_textpage()
+        text = text_page.extractText()
+        docs.append(Document(page_content=text))
+    vector_store = process(docs)
+    app.state.vector_store = vector_store
+    app.state.chat_id = fileid
+    app.state.username = username
+    return {"context": "Done"}
 
 
 @app.get("/user_pdfs")
@@ -85,6 +103,8 @@ async def pdf_processing(
     print("endpoint reached")
     with open(temp_file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
+    pdf_binary_id = create_pdf(temp_file_path,chat_id)
+    
     try:
         loader = PyMuPDFLoader(temp_file_path)
         docs = loader.load()

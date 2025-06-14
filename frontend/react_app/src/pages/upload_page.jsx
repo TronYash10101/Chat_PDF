@@ -82,6 +82,28 @@ function upload({ children }) {
     }
   };
 
+  const existing_history = async (fileid) => {
+    try {
+      const his = await api.get(
+        "/user_history",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            fileid: fileid,
+          },
+        },
+        fileid
+      );
+      setTimeout(() => {
+        navigate("/rolling")
+      }, 200);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div id="container">
       <div id="main_interaction">
@@ -113,15 +135,22 @@ function upload({ children }) {
       <div id="history">
         <h1 id="history_title">Your PDFs</h1>
         <div id="pdfs">
-        {pdf_obj && Object.entries(pdf_obj).length > 0 ? (
-          Object.entries(pdf_obj).map(([id, context]) => (
-            <button key={id} value={id} className="pdf_btns">
-              {context["name"]}
-            </button>
-          ))
-        ) : (
-          <p style={{color : "#ff6500",fontSize : "1.3em"}}>No PDFs uploaded yet.</p>
-        )}
+          {pdf_obj && Object.entries(pdf_obj).length > 0 ? (
+            Object.entries(pdf_obj).map(([id, context]) => (
+              <button
+                key={id}
+                value={id}
+                className="pdf_btns"
+                onClick={() => existing_history(id)}
+              >
+                {context["name"]}
+              </button>
+            ))
+          ) : (
+            <p style={{ color: "#ff6500", fontSize: "1.3em" }}>
+              No PDFs uploaded yet.
+            </p>
+          )}
         </div>
       </div>
       <User_info />
