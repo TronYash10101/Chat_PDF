@@ -4,7 +4,7 @@ BUT IF THERE ARE MULTIPLE UESRS THEN THERE IS HIGH PROBABILITY THEIR FILES MAY C
 LIKE IF THEY BOTH UPLOAD PDF WITH SAME NAME THEN THEIR DATA WILL BE INTERCHANGED 
 THROUGH FORNTEND SEND THESE PARAMETER(app.state.vector_store,app.state.chat_id,app.state.username) TO CHAT PAGE
 '''
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body,WebSocket,HTMLResponse
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
 import fitz
@@ -17,7 +17,6 @@ from langchain.schema import Document
 from schema import QueryRequest
 from schema import User
 from storage.database import crud
-# import storage.db_collections
 from hashing.password_hashing import hashing
 from authentication.auth import auth_router
 from authentication.auth import get_user_history, get_username
@@ -25,7 +24,7 @@ from typing import Annotated
 import uuid
 from gridfs_db.create_db_pdf import create_pdf
 from gridfs_db.get_file_data import get_file_data
-
+import json
 
 app = FastAPI()
 router = APIRouter()
@@ -117,13 +116,21 @@ async def pdf_processing(
         os.remove(temp_file_path)
 
 #Maybe later on make this endpoint token dependent too
-@app.post("/query")
-async def query_to_bot(query: QueryRequest):
+@app.websocket("/query")
+async def query_to_bot(webSocket:WebSocket):
     vector_store = app.state.vector_store
     chat_id = app.state.chat_id
     username = app.state.username
-    ai_res = gen_ret(query, vector_store,chat_id,username)
-    return {"ai_res": ai_res}
+    await webSocket.accept()
+    while True:
+        raw_text = await webSocket.receive_text()
+        temp_dict = json.dumps(raw_text)
+        query_dict = json.loads(temp_dict)
+
+        async for chunck in gen_ret(query_dict["query"], vector_store,chat_id,username):
+            if chunck.__class__.__name__ == "ResponseTextDeltaEvent":
+               await webSocket.send_text(chunck.delta)
+
 
 
 app.include_router(router)

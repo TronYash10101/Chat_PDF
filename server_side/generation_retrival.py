@@ -12,14 +12,6 @@ from storage.database import crud
 # docs = loader.load()
 # vector_store = embeddings_vectordb.process(docs)
 
-# File = r"D:\RAG2\data\history.json"
-
-# if os.path.exists(File):
-#     with open(File, 'rb') as f:
-#         message_history = pickle.load(f)
-# else:
-#     message_history = []
-
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
@@ -78,21 +70,17 @@ def gen_ret(query: str,vector_store,uuid:str,username:str):
             model="gpt-4o-mini",
             input=message_history,
             tools=tools,
-            stream=True,
+            stream=True
         )
         answer = final_response.output[0].content[0].text 
         
     elif tool_call.type == "message":
         answer = tool_call.content[0].text
-        
     
-    # print(message_history)
     message_history.append({"role": "assistant", "content": answer})
-    # with open(File, 'wb') as f:
-    #     pickle.dump(message_history, f)
     crud.update_context_field(username,uuid,message_history)
-    # print(tool_call)
-    return answer
+
+    return final_response
 
 # x = gen_ret("about which war I asked you just now?",vector_store)
 # print(x)
