@@ -14,9 +14,6 @@ function Rolling() {
       console.log(error);
     }
   };
-  const random = async () => {
-    return Math.floor(Math.random() * 100);
-  };
   const text_change = (event) => {
     settempmsg(event.target.value);
   };
