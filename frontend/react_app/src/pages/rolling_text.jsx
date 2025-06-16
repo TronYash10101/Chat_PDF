@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import "./css/rolling.css";
 import api from "../api.js";
 
@@ -6,14 +7,7 @@ function Rolling() {
   const [chat, setchat] = useState([]);
   const [tempmsg, settempmsg] = useState("");
 
-  const ai_endpoint = async (query) => {
-    try {
-      const ai_response = api.post("/query", { query: query });
-      return ai_response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
   const text_change = (event) => {
     settempmsg(event.target.value);
   };
@@ -38,8 +32,6 @@ function Rolling() {
         }
         return updated_chat;
       });
-      console.log(chat);
-      
     } catch (error) {
       console.log(error);
     }

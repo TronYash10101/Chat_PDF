@@ -4,7 +4,7 @@ BUT IF THERE ARE MULTIPLE UESRS THEN THERE IS HIGH PROBABILITY THEIR FILES MAY C
 LIKE IF THEY BOTH UPLOAD PDF WITH SAME NAME THEN THEIR DATA WILL BE INTERCHANGED 
 THROUGH FORNTEND SEND THESE PARAMETER(app.state.vector_store,app.state.chat_id,app.state.username) TO CHAT PAGE
 '''
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body,WebSocket,HTMLResponse
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body,WebSocket
 from fastapi import UploadFile
 from langchain_community.document_loaders import PyMuPDFLoader
 import fitz
@@ -127,7 +127,7 @@ async def query_to_bot(webSocket:WebSocket):
         temp_dict = json.dumps(raw_text)
         query_dict = json.loads(temp_dict)
 
-        async for chunck in gen_ret(query_dict["query"], vector_store,chat_id,username):
+        for chunck in gen_ret(query_dict["query"], vector_store,chat_id,username):
             if chunck.__class__.__name__ == "ResponseTextDeltaEvent":
                await webSocket.send_text(chunck.delta)
 
