@@ -73,6 +73,7 @@ def gen_ret(query: str,vector_store,uuid:str,username:str):
             stream=True
         )
         answer = final_response.output[0].content[0].text 
+        return final_response
         
     elif tool_call.type == "message":
         answer = tool_call.content[0].text
