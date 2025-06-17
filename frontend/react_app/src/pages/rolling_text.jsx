@@ -1,51 +1,60 @@
 import React, { useEffect, useState } from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import "./css/rolling.css";
-import api from "../api.js";
 
 function Rolling() {
-  const [chat, setchat] = useState([]);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
+    "ws://127.0.0.1:8000/query",
+    { shouldReconnect: () => true }
+  );
+  const [message_history, setmessage_history] = useState([]);
   const [tempmsg, settempmsg] = useState("");
+  const [chat, setchat] = useState([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const ai_endpoint = async (query) => {
-    try {
-      const ai_response = api.post("/query", { query: query });
-      return ai_response;
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (lastMessage != null) {
+      const token = lastMessage.data;
+
+      setmessage_history((prev) => {
+        const last = [...prev];
+        last[last.length - 1] = (last[last.length - 1] || "") + token;
+        return last;
+      });
+      setchat((prev) => {
+        const up_chat = [...prev];
+        up_chat[up_chat.length - 1]["AI"] =
+          message_history[message_history.length - 1];
+          setIsGenerating(false)
+        return up_chat;
+      });
+      
+      
     }
-  };
-  const random = async () => {
-    return Math.floor(Math.random() * 100);
-  };
+  }, [lastMessage]);
+
   const text_change = (event) => {
     settempmsg(event.target.value);
   };
-   
-  const send = async () => {
-    if (tempmsg.trim() === "") {
-      return;
-    }
-    const userMessage = tempmsg; 
-    settempmsg(""); 
 
-    const newMessage = { You: userMessage, AI: "..." };
+  const send = async () => {
+
+    if (tempmsg.trim() === "") return;
+    
+    setmessage_history((prev) => [...prev, ""]);
+    sendMessage(tempmsg);
+    setIsGenerating(true)
+
+    const newMessage = { You: tempmsg, AI: "..." };
     setchat((prev_chat) => [...prev_chat, newMessage]);
-    try {
-      const ai = await ai_endpoint(userMessage);
-      
-      // const ai = await random(userMessage);
-      setchat((prev_chat_after_add) => {
-        const updated_chat = [...prev_chat_after_add];
-        if (updated_chat.length > 0) {
-          updated_chat[updated_chat.length - 1]["AI"] = ai.data["ai_res"]
-        }
-        return updated_chat;
-      });
-      console.log(chat);
-      
-    } catch (error) {
-      console.log(error);
-    }
+
+    setchat((prev) => {
+      const up_chat = [...prev];
+      up_chat[up_chat.length - 1]["You"] = tempmsg;
+      return up_chat;
+    });
+    settempmsg(""); // Optional: clear input field
+
   };
 
   const handleKeyDown = (e) => {
@@ -54,7 +63,8 @@ function Rolling() {
       send();
     }
   };
-
+  console.log(readyState);
+  
   return (
     <>
       <textarea
@@ -77,8 +87,8 @@ function Rolling() {
         ))}
       </ul>
 
-      <button id="submit" onClick={send}>
-        ⬆
+      <button id="submit" onClick={send} disabled={isGenerating}>
+        {isGenerating ? "Generating..." : "Send"}
       </button>
     </>
   );
