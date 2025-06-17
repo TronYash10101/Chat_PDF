@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import "./css/rolling.css";
-import api from "../api.js";
 
 function Rolling() {
-  const { sendMessage, lastMessage, readystate } = useWebSocket(
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://127.0.0.1:8000/query",
     { shouldReconnect: () => true }
   );
   const [message_history, setmessage_history] = useState([]);
   const [tempmsg, settempmsg] = useState("");
   const [chat, setchat] = useState([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     if (lastMessage != null) {
@@ -25,10 +25,12 @@ function Rolling() {
         const up_chat = [...prev];
         up_chat[up_chat.length - 1]["AI"] =
           message_history[message_history.length - 1];
+          setIsGenerating(false)
         return up_chat;
       });
+      
+      
     }
-    console.log(message_history);
   }, [lastMessage]);
 
   const text_change = (event) => {
@@ -38,9 +40,10 @@ function Rolling() {
   const send = async () => {
 
     if (tempmsg.trim() === "") return;
-
+    
     setmessage_history((prev) => [...prev, ""]);
     sendMessage(tempmsg);
+    setIsGenerating(true)
 
     const newMessage = { You: tempmsg, AI: "..." };
     setchat((prev_chat) => [...prev_chat, newMessage]);
@@ -60,7 +63,8 @@ function Rolling() {
       send();
     }
   };
-
+  console.log(readyState);
+  
   return (
     <>
       <textarea
@@ -83,8 +87,8 @@ function Rolling() {
         ))}
       </ul>
 
-      <button id="submit" onClick={send}>
-        ⬆
+      <button id="submit" onClick={send} disabled={isGenerating}>
+        {isGenerating ? "Generating..." : "Send"}
       </button>
     </>
   );

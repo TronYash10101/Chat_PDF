@@ -1,8 +1,9 @@
 body {
   background-color: #1e3e62;
   margin: 0;
-  
-  
+}
+#root{
+  height: auto;
 }
 #ai {
   position: absolute;
@@ -43,6 +44,9 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
   color: white;
+}
+#submit:hover{
+  cursor: pointer;
 }
 #human_message {
   display: inline-block;

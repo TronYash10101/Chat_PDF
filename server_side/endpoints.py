@@ -125,10 +125,8 @@ async def query_to_bot(webSocket:WebSocket):
     while True:
         raw_text = await webSocket.receive_text()
         # query_dict = json.loads(raw_text)
-
-        for chunck in gen_ret(raw_text, vector_store,chat_id,username):
-            if chunck.__class__.__name__ == "ResponseTextDeltaEvent":
-               await webSocket.send_text(chunck.delta)
+        for chunck in gen_ret(raw_text,vector_store=vector_store,uuid=chat_id,username=username):
+            await webSocket.send_text(chunck)
 
 
 

@@ -42,7 +42,7 @@ def gen_ret(query: str,vector_store,uuid:str,username:str):
         },
         "strict": True
     }]
-    condition = ", answer strictly based on the context received and answer even if you find some similarity, if you still don't find it, say 'could not find exactly'.If user greets,greet user back"
+    condition = ", answer strictly based on the context received and answer even if you find some similarity, if you still don't find it, say 'could not find exactly'.If user greets,greet user back, also end response with a full stop. "
     message_history.append({"role": "user", "content": f"{query}{condition}"})
 
     tool_response = client.responses.create(
@@ -66,22 +66,23 @@ def gen_ret(query: str,vector_store,uuid:str,username:str):
             "output": str(result)
         })
 
-        final_response = client.responses.create(
-            model="gpt-4o-mini",
-            input=message_history,
-            tools=tools,
-            stream=True
-        )
-        answer = final_response.output[0].content[0].text 
-        return final_response
+    final_response = client.responses.create(
+        model="gpt-4o-mini",
+        input=message_history,
+        tools=tools,
+        stream=True
+    )  
         
-    elif tool_call.type == "message":
-        answer = tool_call.content[0].text
-    
-    message_history.append({"role": "assistant", "content": answer})
+    for chunck in final_response:
+        if(chunck.__class__.__name__ == "ResponseTextDeltaEvent"):
+            yield chunck.delta
+        elif(chunck.__class__.__name__ == "ResponseCompletedEvent"):
+            message_history.append({"role": "assistant", "content": chunck.response.output[0].content[0].text})
+            break
+
     crud.update_context_field(username,uuid,message_history)
 
-    return final_response
+    
 
 # x = gen_ret("about which war I asked you just now?",vector_store)
 # print(x)
