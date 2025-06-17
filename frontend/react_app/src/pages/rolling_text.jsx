@@ -1,40 +1,57 @@
 import React, { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import "./css/rolling.css";
 import api from "../api.js";
 
 function Rolling() {
-  const [chat, setchat] = useState([]);
+  const { sendMessage, lastMessage, readystate } = useWebSocket(
+    "ws://127.0.0.1:8000/query",
+    { shouldReconnect: () => true }
+  );
+  const [message_history, setmessage_history] = useState([]);
   const [tempmsg, settempmsg] = useState("");
+  const [chat, setchat] = useState([]);
 
-  
+  useEffect(() => {
+    if (lastMessage != null) {
+      const token = lastMessage.data;
+
+      setmessage_history((prev) => {
+        const last = [...prev];
+        last[last.length - 1] = (last[last.length - 1] || "") + token;
+        return last;
+      });
+      setchat((prev) => {
+        const up_chat = [...prev];
+        up_chat[up_chat.length - 1]["AI"] =
+          message_history[message_history.length - 1];
+        return up_chat;
+      });
+    }
+    console.log(message_history);
+  }, [lastMessage]);
+
   const text_change = (event) => {
     settempmsg(event.target.value);
   };
-   
-  const send = async () => {
-    if (tempmsg.trim() === "") {
-      return;
-    }
-    const userMessage = tempmsg; 
-    settempmsg(""); 
 
-    const newMessage = { You: userMessage, AI: "..." };
+  const send = async () => {
+
+    if (tempmsg.trim() === "") return;
+
+    setmessage_history((prev) => [...prev, ""]);
+    sendMessage(tempmsg);
+
+    const newMessage = { You: tempmsg, AI: "..." };
     setchat((prev_chat) => [...prev_chat, newMessage]);
-    try {
-      const ai = await ai_endpoint(userMessage);
-      
-      // const ai = await random(userMessage);
-      setchat((prev_chat_after_add) => {
-        const updated_chat = [...prev_chat_after_add];
-        if (updated_chat.length > 0) {
-          updated_chat[updated_chat.length - 1]["AI"] = ai.data["ai_res"]
-        }
-        return updated_chat;
-      });
-    } catch (error) {
-      console.log(error);
-    }
+
+    setchat((prev) => {
+      const up_chat = [...prev];
+      up_chat[up_chat.length - 1]["You"] = tempmsg;
+      return up_chat;
+    });
+    settempmsg(""); // Optional: clear input field
+
   };
 
   const handleKeyDown = (e) => {
