@@ -10,11 +10,12 @@ const Roling = lazy(()=>import("./pages/rolling_text"))
 const Signout = lazy(()=>import("./pages/signout"))
 const Login = lazy(()=>import("./pages/login"))
 const Landing_Page = lazy(()=>import("./pages/landing_page"))
+const Multiple_Upload = lazy(()=>import("./pages/multiple_upload"))
 
 function App() {
   return (
     <BrowserRouter>
-    <Suspense fallback={<div></div>}>
+    <Suspense fallback={<div><p>Loading</p></div>}>
       <Routes>
         <Route path="/" element={<Landing_Page />} />
         <Route path="/login" element={<Login />} />
@@ -22,6 +23,7 @@ function App() {
         <Route path="/rolling" element={<Roling />} />
         <Route path="/signout" element={<Signout />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/multiple_upload" element={<Multiple_Upload />} />
       </Routes>
       </Suspense>
     </BrowserRouter>

@@ -13,18 +13,54 @@ import faiss
 # loader = PyMuPDFLoader("D:\RAG2\data\pdf.pdf")
 # docs = loader.load()
 
+
 def process(docs):
     text_split = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200,
-            add_start_index=True,
-        )
+        chunk_size=1000,
+        chunk_overlap=200,
+        add_start_index=True,
+    )
 
     all_splits = text_split.split_documents(docs)
 
-    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    embedding_model = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-mpnet-base-v2"
+    )
 
     embedding_length = len(embedding_model.embed_query(all_splits[3].page_content))
+
+    index = faiss.IndexFlatL2(embedding_length)
+
+    vector_store = FAISS(
+        embedding_function=embedding_model,
+        index=index,
+        docstore=InMemoryDocstore(),
+        index_to_docstore_id={},
+    )
+
+    ids = vector_store.add_documents(documents=all_splits)
+    return vector_store
+
+
+def process_multiple(file_paths: list):
+    
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+        add_start_index=True,
+    )
+
+    doc_store = []
+
+    for file in file_paths:
+        loader = PyMuPDFLoader(file)
+        docs = loader.load()
+        all_splits = splitter.split_documents(docs)
+        doc_store.extend(all_splits)
+
+    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+
+    embedding_length = len(embedding_model.embed_query(doc_store[3].page_content))
 
     index = faiss.IndexFlatL2(embedding_length)
 
@@ -35,8 +71,5 @@ def process(docs):
             index_to_docstore_id={},
         )
 
-    ids = vector_store.add_documents(documents=all_splits)
+    ids = vector_store.add_documents(documents=doc_store)
     return vector_store
-
-
-
