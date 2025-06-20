@@ -14,23 +14,46 @@ class crud:
     def create_context_field(username: str, uid: str,pdf_data:str):
         # result_field = user_collection.update_one({"username" : username},{"$set" : {"pdf" :{pdf_name: ""}}})
 
-        query = {"username": username, f"pdf.{uid}": {"$exists": False}}
+        query = {"username": username, f"single_pdf.{uid}": {"$exists": False}}
         
-        update = {"$set": {f"pdf.{uid}": pdf_data}}
+        update = {"$set": {f"single_pdf.{uid}": pdf_data}}
+
+        user_collection.update_one(query, update)
+
+    def create_context_field_multiple(username: str, uid: str,pdf_data:str):
+        query = {"username": username, f"multiple_pdf.{uid}": {"$exists": False}}
+        
+        update = {"$set": {f"multiple_pdf.{uid}": pdf_data}}
 
         user_collection.update_one(query, update)
 
     def get_user_pdfs(username:str):
-        result = user_collection.find_one({"username": username}, {"pdf": 1, "_id": 0})
-        return result.get("pdf")
+        result = user_collection.find_one({"username": username}, {"single_pdf": 1, "_id": 0})
+        return result.get("single_pdf")
+    
+    def get_user_pdfs_multiple(username:str):
+        result = user_collection.find_one({"username": username}, {"multiple_pdf": 1, "_id": 0})
+        return result.get("multiple_pdf")
 
     def update_context_field(username: str,uid: str,context:list):
-         query = {"username": username, f"pdf.{uid}": {"$exists": True}}
+         query = {"username": username, f"single_pdf.{uid}": {"$exists": True}}
 
-         update = {"$set": {f"pdf.{uid}.context": context}}
+         update = {"$set": {f"single_pdf.{uid}.context": context}}
+
+         user_collection.update_one(query, update)
+    
+    def update_context_field_multiple(username: str,uid: str,context:list):
+         query = {"username": username, f"multiple_pdf.{uid}": {"$exists": True}}
+
+         update = {"$set": {f"multiple_pdf.{uid}.context": context}}
 
          user_collection.update_one(query, update)
 
     def get_user_context(username:str,uid:str):
-        result = user_collection.find_one({"username": username}, {"pdf": 1, "_id": 0})
-        return result.get("pdf")[uid].get("context")
+        result = user_collection.find_one({"username": username}, {"single_pdf": 1, "_id": 0})
+        return result.get("single_pdf")[uid].get("context")
+
+    def get_user_context_multiple(username:str,uid:str):
+        result = user_collection.find_one({"username": username}, {"multiple_pdf": 1, "_id": 0})
+        return result.get("multiple_pdf")[uid].get("context")
+    
