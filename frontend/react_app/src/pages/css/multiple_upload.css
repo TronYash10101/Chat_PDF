@@ -42,7 +42,7 @@ body {
   -webkit-backdrop-filter: blur(15px) saturate(200%);
 }
 
-#blur_cover {
+#blur_cover_multiple {
   position: relative;
   height: 161.6vh;
   width: 100.8vw;

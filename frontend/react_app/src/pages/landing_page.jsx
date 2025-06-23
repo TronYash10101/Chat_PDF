@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/landing.css";
 import { useState, useEffect } from "react";
 import api from "../api.js";
-import Credential_error from "./error_pages/credential_error.jsx";
+import Credential_error from "./miscellaneous_pages/credential_error.jsx";
 import User_info from "../components/user_info.jsx";
 
 function Landing_Page() {
@@ -75,7 +75,7 @@ function Landing_Page() {
           navigate("/login");
         }}
       >
-        Login
+        Start Taking
       </button>
       <User_info />
       <div id="blur_cover"></div>

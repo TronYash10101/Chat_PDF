@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  background-color: #000000;
+}
+
+#two_options {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+#single_pdf {
+  width: 50vw;
+  color: white;
+}
+#multiple_pdf {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  width: 50vw;
+  color: #ff6500;
+
+  border-radius: 5px;
+  background: linear-gradient(145deg, #00223c, #001d32);
+  box-shadow: 5px 5px 10px #002037, -5px -5px 10px #002039;
+}
+.text {
+  font-weight: lighter;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+#multiple_btn {
+  position: relative;
+  top: 24vh;
+  height: 4em;
+  cursor: pointer;
+  width: 15em;
+  background: none;
+  border: 5px solid #ff6500;
+  color: #ff6500;
+  font-weight: bolder;
+}
+#single_btn {
+  position: relative;
+  top: 27vh;
+  left: 27em;
+  height: 4em;
+  cursor: pointer;
+  width: 15em;
+  background: none;
+  border: 5px solid #ff6500;
+  color: #ff6500;
+  font-weight: bolder;
+}
+#multiple_btn:hover {
+  cursor: pointer;
+  backdrop-filter: blur(15px) saturate(200%);
+  -webkit-backdrop-filter: blur(15px) saturate(200%);
+  background-color: rgba(255, 101, 0, 0.65);
+  color: #0b192c;
+}
+#single_btn:hover {
+  cursor: pointer;
+  backdrop-filter: blur(15px) saturate(200%);
+  -webkit-backdrop-filter: blur(15px) saturate(200%);
+  background-color: rgba(255, 101, 0, 0.65);
+  color: #0b192c;
+}

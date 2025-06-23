@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import api from "../api.js";
 import "./css/multiple_upload.css";
 import User_info from "../components/user_info.jsx";
+import Loading_page from "./miscellaneous_pages/loading_page.jsx";
+
 
 function Multiple_Upload() {
   const [files_selected, setfiles_selected] = useState([]);
@@ -11,6 +13,7 @@ function Multiple_Upload() {
   const [isAuthenticated, setisAuthenticated] = useState(false);
   const [token, settoken] = useState(null);
   const [pdf_obj, setpdf_obj] = useState([]);
+  const [isLoading,setisLoading] = useState(false)
 
   useEffect(() => {
     const tok = localStorage.getItem("access_token");
@@ -57,6 +60,7 @@ function Multiple_Upload() {
       formData.append("files", file);
     });
     try {
+      setisLoading(true)
       const response = await api.post("/multiple", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -72,6 +76,7 @@ function Multiple_Upload() {
 
   const existing_history = async (fileid) => {
     try {
+      setisLoading(true)
       const his = await api.get(
         "/user_history",
         {
@@ -90,6 +95,7 @@ function Multiple_Upload() {
       console.log(error);
     }
   };
+  if (isLoading) return <Loading_page />
 
   return (
     <>
@@ -123,7 +129,7 @@ function Multiple_Upload() {
           <li key={idx}>{file}</li>
         ))}
       </ol>
-      <div id="blur_cover"></div>
+      <div id="blur_cover_multiple"></div>
       <div id="previous_multiple_pdf">
         {pdf_obj && Object.entries(pdf_obj).length > 0 ? (
           Object.entries(pdf_obj).map(([id, pdf]) => (
@@ -132,7 +138,7 @@ function Multiple_Upload() {
             </button>
           ))
         ) : (
-          <p>No PDF Uploaded</p>
+          <p style={{"color":"white"}}>No PDF Uploaded</p>
         )}
       </div>
     </>

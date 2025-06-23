@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 // import { useContext } from "react";
 // import { user_context } from "../context.jsx";
 import User_info from "../components/user_info.jsx";
+import Loading_page from "./miscellaneous_pages/loading_page.jsx";
 
 function upload({ children }) {
   const fileInputRef = useRef(null);
@@ -13,6 +14,7 @@ function upload({ children }) {
   const [isAuthenticated, setisAuthenticated] = useState(false);
   const [token, settoken] = useState("");
   const [pdf_obj, setpdf_obj] = useState({});
+  const [isLoading, setisLoading] = useState(false)
   // const context = useContext(user_context);
   // console.log(context);
 
@@ -66,7 +68,7 @@ function upload({ children }) {
       if (!selectedfile) {
         alert("Select a file");
       }
-
+      setisLoading(true)
       const formData = new FormData();
       formData.append("file", selectedfile);
 
@@ -76,7 +78,8 @@ function upload({ children }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      setTimeout(() => navigate("/rolling"), 100);
+      
+      setTimeout(() => navigate("/rolling"), 1000);
     } catch (e) {
       console.log(e);
     }
@@ -84,6 +87,7 @@ function upload({ children }) {
 
   const existing_history = async (fileid) => {
     try {
+      setisLoading(true)
       const his = await api.get(
         "/user_history",
         {
@@ -103,6 +107,8 @@ function upload({ children }) {
       console.log(error);
     }
   };
+
+  if (isLoading) return <Loading_page />
 
   return (
     <div id="container">

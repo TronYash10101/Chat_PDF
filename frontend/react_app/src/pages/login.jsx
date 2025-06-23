@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import api from "../api.js";
 import { useNavigate, Navigate } from "react-router-dom";
 import "./css/login.css";
-import Credential_error from "./error_pages/credential_error.jsx";
+import Credential_error from "./miscellaneous_pages/credential_error.jsx";
 
 function Login() {
   const [user, setuser] = useState({ username: "", password: "" });

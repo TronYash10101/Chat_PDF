@@ -95,8 +95,6 @@ async def pdf_processing(
     crud.create_context_field(username, chat_id, pdf_data)
     app.state.chat_id = chat_id
     app.state.username = username
-    app.state.is_multiple = True
-
 
     temp_file_path = f"D:/RAG2/data/{file.filename}_copy.pdf"
 

@@ -11,6 +11,7 @@ const Signout = lazy(()=>import("./pages/signout"))
 const Login = lazy(()=>import("./pages/login"))
 const Landing_Page = lazy(()=>import("./pages/landing_page"))
 const Multiple_Upload = lazy(()=>import("./pages/multiple_upload"))
+const Portal = lazy(()=>import("./pages/miscellaneous_pages/portal"))
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signout" element={<Signout />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/multiple_upload" element={<Multiple_Upload />} />
+        <Route path="/portal" element={<Portal />} />
       </Routes>
       </Suspense>
     </BrowserRouter>
